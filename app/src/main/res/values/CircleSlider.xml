@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources> <declare-styleable name="Circle_Slider">
+    <attr name= "C1Diameter" format = "dimension"/>
+    <attr name= "C2Diameter" format = "dimension"/>
+    <attr name= "C3Diameter" format = "dimension"/>
+    <attr name= "LigneLargeur" format = "dimension"/>
+    <attr name= "TextSize" format = "dimension"/>
+    <attr name= "C1Color" format = "color"/>
+    <attr name= "C2Color" format = "color"/>
+    <attr name= "C3Color" format = "color"/>
+    <attr name= "ValueBarColor" format = "color"/>
+    <attr name= "LigneColor" format = "color"/>
+    <attr name= "ValueColor" format = "color"/>
+    <attr name= "enabled" format = "boolean"/>
+</declare-styleable></resources>

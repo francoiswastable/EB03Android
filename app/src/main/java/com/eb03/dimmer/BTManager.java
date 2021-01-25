@@ -23,6 +23,7 @@ public class BTManager extends Transceiver {
     private WritingThread mWritingThread = null;
 
 
+
     @Override
     public void connect(String id) {
         BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(id);
@@ -51,7 +52,7 @@ public class BTManager extends Transceiver {
 
 
         public ConnectThread(BluetoothDevice device) {
-            //BluetoothSocket socket = null;
+
 
             try {
                 mSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
@@ -90,6 +91,7 @@ public class BTManager extends Transceiver {
      */
     private class WritingThread extends Thread{
         private OutputStream mOutStream;
+        ByteRingBuffer mBuffer = new ByteRingBuffer(1024);
 
         public WritingThread(BluetoothSocket mSocket) {
             try {
@@ -101,13 +103,28 @@ public class BTManager extends Transceiver {
 
         @Override
         public void run() {
+            int bytes;
             while(mSocket != null){
+                    try {
+                        bytes = mBuffer.get();
+                        mOutStream.write(bytes);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                mOutStream.write();
             }
         }
 
-        // déclarer une ref vers un buffer circulaire
+         public void write(byte[] bytes) {
+            try {
+                mOutStream.write(bytes);
+            }  catch (Exception e) {
+                e.printStackTrace();
+            }
+
+         }
+
 
 
     }
