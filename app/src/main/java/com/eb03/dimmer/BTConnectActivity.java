@@ -1,3 +1,6 @@
+/**
+ * @author François Wastable
+ */
 package com.eb03.dimmer;
 
 import androidx.annotation.Nullable;
@@ -24,9 +27,12 @@ import android.widget.Toast;
 
 import java.util.Set;
 
-
+/**
+ * Cette classe gère toutes les actions relevant de la recherche et l’affichage des périphériques
+ * appairés, de la gestion du scanner  jusqu’à la mise à jour des périphériques et de leur adresse
+ * par l’intermédiaire d’un adaptateur Bluetooth
+ */
 public class BTConnectActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-
 
     private static final int BT_ACTIVATION_REQUEST_CODE = 0;
     private static final int RN42_COD = 0x1F00;
@@ -44,6 +50,10 @@ public class BTConnectActivity extends AppCompatActivity implements View.OnClick
 
     private enum Action {START, STOP};
 
+    /**
+     * Méthode onCreate dans laquelle sont gérés les éléments du layout de connexion Bluetooth
+     * @param savedInstanceState sauvegarde d'état
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +92,12 @@ public class BTConnectActivity extends AppCompatActivity implements View.OnClick
         }
 
         mBroadcastReceiver = new BroadcastReceiver() {
+            /**
+             * Méthode de réception d'une intention venant du broadcaster
+             * et l'action en conséquence
+             * @param context context dans lequel tourne le receveur
+             * @param intent l'intention reçue du broadcaster
+             */
             @Override
             public void onReceive(Context context, Intent intent) {
                 switch (intent.getAction()) {
@@ -105,7 +121,9 @@ public class BTConnectActivity extends AppCompatActivity implements View.OnClick
         };
     }
 
-
+    /**
+     * Méthode de mise en pause de l'adaptateur Bluetooth
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -118,6 +136,13 @@ public class BTConnectActivity extends AppCompatActivity implements View.OnClick
         }*/
     }
 
+    /**
+     * Méthode de récupération de l'adresse du device lorsqu'on clique sur son nom
+     * @param adapterView
+     * @param view
+     * @param i position du view dans l'adaptateur
+     * @param l id de l'item séletionné
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent();
@@ -142,7 +167,10 @@ public class BTConnectActivity extends AppCompatActivity implements View.OnClick
         finish();
     }
 
-
+    /**
+     * Méthode d'initialisation du lancement de scanner de périphérique après un appui sur l'item de scan
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -161,7 +189,12 @@ public class BTConnectActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-
+    /**
+     * Méthode qui permet le lancement de la méthode du scanner
+     * @param requestCode : code d'action Bluetooth demandé
+     * @param resultCode : code résultant
+     * @param data : intention de retour contenant l'adresse du device sélectionné
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -176,7 +209,9 @@ public class BTConnectActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
+    /**
+     * Méthode de lancement et d'arrêt de scanner de périphériques et de la bar de recherche
+     */
     private void toggleBtScan(){
         if(mScann.getText().equals("Scanner")){
             btScan(Action.START);
@@ -190,6 +225,10 @@ public class BTConnectActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    /**
+     * Méthode de scanner bluetooth au niveau du broadcaster
+     * @param startstop action à effectuer : start ou stop
+     */
     private void btScan(Action startstop){
         if(startstop == Action.START){
             IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
